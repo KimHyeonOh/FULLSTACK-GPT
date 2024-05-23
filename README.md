@@ -4,3 +4,7 @@ Python 3.10.11
 Get-ExecutionPolicy
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 /env/Scripts/Activate.ps1
+
+pip install -r requirements.txt
+
+source env/bin/activate
