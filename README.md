@@ -7,4 +7,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 pip install -r requirements.txt
 
-source env/bin/activate
+-- source env/bin/activate (Mac일 경우 venv)
+
+-- venv 실행
+.\env\Scripts\Activate.ps1
+
+-- venv 탈출
+deactivate
