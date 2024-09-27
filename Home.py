@@ -2,11 +2,13 @@ import streamlit as st
 from datetime import datetime
 
 st.set_page_config(
-    page_title="FullstackGPT Home",
+    page_title="Home",
     page_icon="♪♪♪"
 )
 
-st.title("FullstackGPT Home")
+st.title("Home")
+
+st.markdown("RE100 포트 폴리오 시뮬레이터 메인화면입니다.")
 
 # today = datetime.today().strftime("%H:%M:%S")
 
