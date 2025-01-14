@@ -48,7 +48,7 @@ llm = ChatOpenAI(
 
 
 @st.cache_data(show_spinner="파일 임베딩중...")
-def embed_file(file):
+def embed_file(file, api_key):
     file_content = file.read()
     file_path = f"./.cache/files/{file.name}"
     dir_path = os.path.dirname(file_path)
@@ -67,7 +67,7 @@ def embed_file(file):
     )
     loader = UnstructuredFileLoader(file_path)
     docs = loader.load_and_split(text_splitter=splitter)
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(api_key=api_key)
     cached_embeddings = CacheBackedEmbeddings.from_bytes_store(
         embeddings, cache_dir,
     )
@@ -123,11 +123,20 @@ with st.sidebar:
 if api_key:
     os.environ['OPENAI_API_KEY'] = api_key
 
+    llm = ChatOpenAI(
+        temperature=0.1,
+        streaming=True,
+        callbacks=[
+            ChatCallbackHandler(),
+        ],
+        api_key=api_key
+    )
+
 if file:
     if not api_key:
         st.error('OpenAI API Key가 필요합니다.')
     else:
-        retriever = embed_file(file)
+        retriever = embed_file(file, api_key)
         send_message("임베딩이 완료되었습니다. 질문해주세요.", "ai", save=False)
         paint_history()
         message = st.chat_input("등록한 파일에 대해 궁금한 것을 질문하세요.")
