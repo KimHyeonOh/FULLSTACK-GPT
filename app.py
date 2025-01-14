@@ -38,13 +38,24 @@ class ChatCallbackHandler(BaseCallbackHandler):
         self.message_box.markdown(self.message)
 
 
-llm = ChatOpenAI(
-    temperature=0.1,
-    streaming=True,
-    callbacks=[
-        ChatCallbackHandler(),
-    ]
-)
+def initialize_llm(api_key: str):
+    if not api_key:
+        st.error("OpenAI API Key가 필요합니다.")
+        return None
+    return ChatOpenAI(
+        temperature=0.1,
+        streaming=True,
+        callbacks=[ChatCallbackHandler()],
+        api_key=api_key
+    )
+
+# llm = ChatOpenAI(
+#     temperature=0.1,
+#     streaming=True,
+#     callbacks=[
+#         ChatCallbackHandler(),
+#     ]
+# )
 
 
 @st.cache_data(show_spinner="파일 임베딩중...")
