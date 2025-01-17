@@ -34,12 +34,12 @@ st.set_page_config(
 
 st.title("풀스택 GPT 챌린지 Assignment 7")
 
-llm = ChatOpenAI(
-    temperature=0.1,
-    model="gpt-3.5-turbo-1106",
-    streaming=True,
-    callbacks=[StreamingStdOutCallbackHandler()],
-)
+# llm = ChatOpenAI(
+#     temperature=0.1,
+#     model="gpt-3.5-turbo-1106",
+#     streaming=True,
+#     callbacks=[StreamingStdOutCallbackHandler()],
+# )
 
 
 def format_docs(docs):
@@ -80,8 +80,6 @@ questions_prompt = ChatPromptTemplate.from_messages(
         )
     ]
 )
-
-questions_chain = {"context": format_docs} | questions_prompt | llm
 
 formatting_prompt = ChatPromptTemplate.from_messages(
     [
@@ -208,19 +206,13 @@ formatting_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-formatting_chain = formatting_prompt | llm
-
 easy_prompt = ChatPromptTemplate.from_messages(
     "The questions should be simple and straightforward."
 )
 
-easy_chain = easy_prompt | llm
-
 difficult_prompt = ChatPromptTemplate.from_messages(
     "The questions should have moderate difficulty."
 )
-
-difficult_chain = difficult_prompt | llm
 
 
 @st.cache_data(show_spinner="Loading file...")
@@ -293,6 +285,10 @@ else:
         callbacks=[StreamingStdOutCallbackHandler()],
         api_key=api_key
     )
+    formatting_chain = formatting_prompt | llm
+    questions_chain = {"context": format_docs} | questions_prompt | llm
+    easy_chain = easy_prompt | llm
+    difficult_chain = difficult_prompt | llm
 
     if not docs:
         st.markdown(
